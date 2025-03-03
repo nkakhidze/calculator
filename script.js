@@ -1,4 +1,3 @@
-
 function load() {
   const btns = document.querySelectorAll("#calculator span");
   const operators = ["+", "-", "x", "÷"];
@@ -60,4 +59,51 @@ function load() {
       }
     });
   }
+  const handle = document.getElementById('handle');
+  let isDragging = false;
+  let startY;
+
+  handle.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY - handle.offsetTop; // Сохраняем начальную позицию клика
+  });
+
+  document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+          e.preventDefault(); // Предотвращаем выделение текста
+          const y = e.clientY - startY;
+          if (y >= -250 && y <= -120) { 
+              handle.style.top = `${y}px`;
+              if (y >= -125 && y <= -120) {   
+                window.getSelection().removeAllRanges();            
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.classList.remove('hidden');
+                setTimeout(() => {
+                  imageContainer.classList.add('show');
+                  }, 2000);
+                
+                setTimeout(() => {
+                  imageContainer.classList.remove('show')              
+                  }, 1000);
+                setTimeout(() => {
+                  imageContainer.classList.add('hidden');
+                  }, 1000);
+                  inputScreen.innerHTML = Number(inputScreen.innerHTML)**2;
+                        }
+          }
+        }
+  });
+
+  document.addEventListener('mouseup', () => {
+      isDragging = false;
+      handle.style.top = '-250px'; // Возвращение в исходное состояние
+  });
+
+  const square = document.getElementById('square');
+
+  square.addEventListener('click', () => {
+      alert('Слабо нажали. Попробуйте сильнее!');
+  });
 }
+
+
